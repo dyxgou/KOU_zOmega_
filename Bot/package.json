@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "axios": "^0.24.0",
+    "discord.js": "^13.5.0",
+    "dotenv": "^10.0.0",
+    "mathjs": "^10.0.2",
+    "mongoose": "^6.1.4"
+  },
+  "name": "zomega",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc"
+  },
+  "version": "1.0.0",
+  "description": "This the new of the bot of the KOU server",
+  "author": "iDiego5614",
+  "license": "MIT"
+}
