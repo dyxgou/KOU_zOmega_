@@ -13,12 +13,19 @@ export default {
 
     const { id : userId } = message.author
     const amountToWith = args[0]
+
+    if(+amountToWith <= 0)
+    {
+      return message.reply({
+        content : `No creo que el banco te deje depositar \`$${amountToWith}\``,
+      })
+    }
     
     const embed = new MessageEmbed({
       author : 
       {
         iconURL : message.author.displayAvatarURL({ dynamic : true }),
-        name : message.author.username
+        name : "WITHDRAW"
       },
       color: "RANDOM"
     }).setTimestamp()
@@ -33,8 +40,15 @@ export default {
     }).then(res => {
       if(res.status === 200)
       {
-        
+        embed.setDescription(`¡Has sacado del banco una cantidad de \`$${res.data.amountToWith}\` :money_mouth:!`)
       }
+    }).catch(err => {
+      console.error(err);
+      embed.setDescription(`Ha ocurrido un error al sacar tu dinero.`)
+    })
+
+    return message.reply({
+      embeds : [ embed ] 
     })
   }
 }

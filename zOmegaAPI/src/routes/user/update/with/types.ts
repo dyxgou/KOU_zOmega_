@@ -8,6 +8,7 @@ const withBodyRequest = Type.Object(
 
 export type WithBody = Static<typeof withBodyRequest>
 
+
 const withParamsRequest = Type.Object(
   {
     userId : Type.String(),

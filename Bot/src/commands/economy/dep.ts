@@ -13,6 +13,13 @@ export default {
 
     const amountToDep = args[0]
 
+    if(+amountToDep <= 0)
+    {
+      return message.reply({
+        content : `No creo que el banco te deje depositar $\`${amountToDep}\``,
+      })
+    }
+
     const { id : userId } = message.author
 
     const embed = new MessageEmbed({
@@ -34,8 +41,7 @@ export default {
     }).then(res => {
       if(res.status === 200)
       {
-        console.log(res.data.amountToDep);
-        embed.setDescription(`Deposited`)
+        embed.setDescription(`¡Has depositado \`$${res.data.amountToDep}\` :money_mouth:!`)
       }
       return
     }).catch(err => {

@@ -32,7 +32,7 @@ const dep : FastifyPluginAsync = async(fastify , options) =>
       amountToDep = user?.coins
     }
 
-    if(amountToDep <= 0)
+    if(amountToDep < 0)
     {
       throw fastify.httpErrors.badRequest("You have to pass positives values")
     }
