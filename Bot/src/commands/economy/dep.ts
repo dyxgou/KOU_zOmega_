@@ -39,14 +39,22 @@ export default {
         amount : amountToDep
       }
     }).then(res => {
+      console.log(res);
       if(res.status === 200)
       {
-        embed.setDescription(`¡Has depositado \`$${res.data.amountToDep}\` :money_mouth:!`)
+        embed.setDescription(`¡Has depositado \`$${Math.floor(res.data.amountToDep)}\` :money_mouth:!`)
       }
       return
     }).catch(err => {
       console.error(err);
-      embed.setDescription(`Ha ocurrido un error al depositar.`)
+      if(err.response.status === 304)
+      {
+        embed.setDescription(`No puedes sacar cantidades iguales o menores a 0 del banco. o.O`) 
+      }
+      else
+      {
+        embed.setDescription(`Ha ocurrido un error al depositar.`)
+      }
     })
 
 

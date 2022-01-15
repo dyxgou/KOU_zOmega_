@@ -32,19 +32,27 @@ export default {
 
     await axios({
       method : "PUT",
-      url : `/update/with/${userId}`,
+      url : `/user/update/with/${userId}`,
       data : 
       {
         amount : amountToWith
       }
     }).then(res => {
       if(res.status === 200)
-      {
-        embed.setDescription(`¡Has sacado del banco una cantidad de \`$${res.data.amountToWith}\` :money_mouth:!`)
+      {        
+        embed.setDescription(`¡Has sacado del banco una cantidad de \`$${Math.floor(res.data.amountToWith)}\` :money_mouth:!`)
       }
     }).catch(err => {
-      console.error(err);
-      embed.setDescription(`Ha ocurrido un error al sacar tu dinero.`)
+      console.error(err.response.status);
+      if(err.response.status === 304)
+      {
+        embed.setDescription(`No tienes dinero en el banco, que puedas sacar. o.O`)
+      }
+      else
+      {
+
+        embed.setDescription(`Ha ocurrido un error al sacar tu dinero.`)
+      }
     })
 
     return message.reply({

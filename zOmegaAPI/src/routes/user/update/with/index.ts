@@ -25,6 +25,11 @@ const withdraw : FastifyPluginAsync = async(fastify , options) =>
       throw fastify.httpErrors.notFound("User not found")
     }
 
+    if(user?.bank <= 0)
+    {
+      return reply.status(304).send("You can't withdraw negative values")
+    }
+
     const ALL_MONEY = "all"
     
     let amountToWith = parseInt(amount)
@@ -41,7 +46,7 @@ const withdraw : FastifyPluginAsync = async(fastify , options) =>
         bank : -amountToWith
       }
     }).then(() =>  {
-      return reply.status(200).send(`The amount (${amountToWith}) has been withdrawn`)
+      return reply.status(200).send({ amountToWith })
     }).catch(err => {
       throw fastify.httpErrors.badRequest(err)
     })
