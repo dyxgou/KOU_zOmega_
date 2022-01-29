@@ -5,6 +5,7 @@ export interface IUser extends Document
   userId : string,
   coins : number,
   bank : number,
+  serverId : string
 }
 
 
@@ -26,6 +27,11 @@ export const UserSchema = new Schema<IUser>(
       type : Number,
       default : 1000
     },
+    serverId :
+    {
+      type : String,
+      required : true, 
+    }
   }, 
   {
     timestamps : true

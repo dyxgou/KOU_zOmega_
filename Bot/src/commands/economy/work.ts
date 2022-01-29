@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import math = require('mathjs')
+import * as math from "mathjs" 
 import axios from '../../utils/connection'
 
 export default {

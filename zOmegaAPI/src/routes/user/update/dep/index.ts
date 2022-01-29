@@ -34,7 +34,7 @@ const dep : FastifyPluginAsync = async(fastify , options) =>
 
     if(amountToDep < 0)
     {
-      throw fastify.httpErrors.badRequest("You have to pass positives values")
+      throw fastify.httpErrors.notAcceptable("You have to pass positives values")
     }
 
     return await user?.updateOne({

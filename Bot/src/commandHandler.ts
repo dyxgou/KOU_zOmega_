@@ -1,101 +1,96 @@
-import { Client , Collection } from "discord.js"
+import { Client, Collection } from "discord.js"
 import getFiles from "./getFiles"
-import { Command , runCommands , runCommandsTimeout } from "../src/utils/runCommands"
-
+import { ICommand } from "./utils/Command"
+import { runCommands, runCommandsTimeout } from "./utils/runCommands"
 
 
 const prefix = "z!"
-const commandHandler = (client : Client) => 
+
+const suffix = __filename.slice(__filename.length - 3)
+
+const commandHandler = (bot : Client) => 
 {
   
-  let commands : Command = {}
+  let commands : ICommand = {}
 
-  const suffix = ".ts"
-  const commandsFiles = getFiles("./src/commands" , suffix)
+  const commandsFiles = getFiles(`${__dirname}\\commands` , suffix)
 
   const cooldowns = new Map()
-  
-  for (const command of commandsFiles) 
+
+  for (const commandRoute of commandsFiles) 
   {
-    const commandFile = require(command)
-    
-    const split = command.replace(/\\/g , "/").split("/")
-    
+    const commandFile = require(commandRoute)
+
+    const split = commandRoute.replace(/\\/g , "/").split("/")
+
     const commandName = split.at(-1)?.replace(suffix , "")
-    
-    commands[commandName?.toLowerCase() || "" ] = commandFile.default
-    
-    if(commands[commandName?.toLowerCase() || ""].cooldown)
-    {
-      if(!cooldowns.has(commandName))
+
+    try {
+      commands[commandName || ""] = commandFile.default
+      console.log(`| ✔ | ${commandName}`);
+
+      if(commands[commandName || ""].cooldown)
       {
-        cooldowns.set(commandName , new Collection())
-      }   
+        if(!cooldowns.has(commandName))
+        {
+          cooldowns.set(commandName , new Collection())
+        }
+      }
+
+    } catch (err) {
+      console.error(err);
     }
   }
-  console.log(commands);
-   
-  
-  client.on("messageCreate" , (message) => 
-  {
-    if(message.author.bot || !message.content.startsWith(prefix))
-    {
-      return
-    }
 
+  bot.on("messageCreate" , async(message) => 
+  {
     const args = message.content.slice(prefix.length).split(" ")
     const commandPrefix = args.shift()!.toLowerCase()
-    const currentTime = Date.now()    
-    const timeStamps : Map< any , any > = cooldowns.get(commandPrefix)
-
+    
     if(!commands[commandPrefix])
     {
       return
     }
 
-    const cooldownAmount = (commands[commandPrefix].cooldown) * 1000 || 0
-    
+    const timestamps : Map< any , any > = cooldowns.get(commandPrefix)
+    const currentTime = Date.now()
+
     if(commands[commandPrefix].cooldown)
     {
-      if(timeStamps.has(message.author.id))
+      const currentCommand = commands[commandPrefix]
+
+      const cooldownAmount = (currentCommand?.cooldown ?? 0) * 1000
+      
+      if(timestamps.has(message.author.id))
       {
-        const expirationTime = timeStamps.get(message.author.id)  + cooldownAmount
-        
+        const expirationTime = timestamps.get(message.author.id) + cooldownAmount
+
         if(currentTime < expirationTime)
         {
           const timeLeft = (expirationTime - currentTime) / 1000
 
-          message.reply({
-            content: `Por favor espera ${timeLeft.toFixed(1)} segundos para ejecutar \`z!${commandPrefix}\` otra vez.`
-          })
+          message.reply(`Por favor espera ${timeLeft.toFixed(0)} segundos para volver a ejecutar \`z!${commandPrefix}\` otra vez.`)
         }
         else
         {
-          // Run commands without Time out
-          runCommands({ args , commandPrefix , commands , message })
+          runCommands({ args , commandPrefix , commands ,  message })
         }
       }
       else
       {
-        // Run Command with Timeout
         runCommandsTimeout({
-          args , commandPrefix , commands , message , cooldownAmount , currentTime , timeStamps 
+          args , commandPrefix , commands , message , cooldownAmount , currentTime , timestamps
         })
       }
     }
-    else
-    {
-      //  If the command doesn't have cooldown
-      runCommands({ args , commandPrefix , commands , message })
+
+    try {
+      runCommands({ args , commandPrefix , commands , message })      
+    } catch (err) {
+      console.error(err);
     }
-    
-    
-    console.log(timeStamps);
-    
   })
-
-
-
 }
+
 
 export default commandHandler

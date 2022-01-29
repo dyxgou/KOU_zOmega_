@@ -7,3 +7,4 @@ const getUserParamsRequest = Type.Object(
 )
 
 export type GetUserParams = Static<typeof getUserParamsRequest>
+

@@ -4,45 +4,57 @@ import axios from "../../utils/connection"
 export default {
   callback : async(message : Message , ...args : string[]) => 
   {
-    const { id : userId } = message.author
+    const userMention = message.mentions.members?.first() || message.guild?.members.cache.get(args[0])
+
+    let userId : string
+
+    if(!userMention)
+    {
+      userId = message.author.id
+    }
+    else
+    {
+      userId = userMention.id
+    }
 
     const embed = new MessageEmbed({
       author : 
       {
-        iconURL : message.author.displayAvatarURL({ dynamic : true }),
-        name : `${message.author.username}'s Cash`
+        iconURL : userMention ? (
+          userMention.displayAvatarURL({ dynamic : true })
+        ) : (
+          message.author.displayAvatarURL({ dynamic : true })
+        ),
+        name : `CASH`
       },
-      color: "RANDOM"
+      color:  "RANDOM",
     }).setTimestamp()
-
-    const userInfo = await axios({
-      url : `/user/get/${userId}`,
-      method : "GET"
-    }).then(res => {
-      if(res.status === 200)
-      {
-        return res.data
-      }
-    }).catch(err => {
-      console.error(err);
-      embed.setDescription(`Ha ocurrido un error, es probable que no estés iniciado en el sistema de Economía de KOU; por lo tanto te recomendamos que te inicies con el comando \`z!start\`. <:tabn:910548967291514920>`)
-      return null
-    })
-
-    console.log(userInfo);
     
 
-    if(userInfo)
-    {
-      embed
+    await axios({
+      method : "GET",
+      url : `/user/get/${userId}`
+    }).then(res => {
+      if(res.status === 200 )
+      {
+        const { data : userInfo } = res
+
+        embed
         .addField("> **COINS**" , `> :coin: \`$${userInfo?.coins}\`` , true)
         .addField("> **BANK**" , `> :bank: \`$${userInfo?.bank}\`` , true)
         .addField("> **TOTAL**" , `> :money_with_wings: \`$${userInfo?.total}\`` , true)
-    }
-
+      }
+    }).catch(err => {
+      if(err.response.status === 404)
+      {
+        return embed.setDescription(`No te has iniciado en el sistema de Economía de KOU; para iniciarte, escribe el comando \`z!start\`. <:tabn:910548967291514920>`)
+      }
+      
+      return embed.setDescription(`Ha ocurrido un error al ver el Cash. Es probable que no estés iniciado `)
+    })
 
     return message.reply({
       embeds : [ embed ]
-    })    
+    })
   }
 }

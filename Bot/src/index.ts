@@ -3,7 +3,6 @@
 import * as DiscordJS from "discord.js"
 import { config } from "dotenv"
 import commandHandler from "./commandHandler"
-import * as mongoose from "mongoose"
 
 // Config the App
 

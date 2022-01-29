@@ -47,7 +47,8 @@ export default {
       return
     }).catch(err => {
       console.error(err);
-      if(err.response.status === 304)
+      if(err.response.status === 488
+        )
       {
         embed.setDescription(`No puedes sacar cantidades iguales o menores a 0 del banco. o.O`) 
       }

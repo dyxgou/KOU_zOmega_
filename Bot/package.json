@@ -6,11 +6,13 @@
     "mathjs": "^10.0.2",
     "mongoose": "^6.1.4"
   },
+  "type": "commonjs",
   "name": "zomega",
   "main": "./dist/index.js",
   "scripts": {
     "start": "node ./dist/index.js",
     "dev": "nodemon src/index.ts",
+    "start:bot" : "yarn build && yarn start",
     "build": "tsc"
   },
   "version": "1.0.0",

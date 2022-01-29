@@ -5,6 +5,7 @@ export default {
   callback : async(message : Message , ...args : string[]) => 
   {
     const { id : userId } = message.author
+    const serverId = message.guildId
 
     const embed = new MessageEmbed({
       author : {
@@ -14,12 +15,13 @@ export default {
       color:  "RANDOM",
     }).setTimestamp()
 
-    const userInfo = await axios({
+    await axios({
       url : "/user/start",
       method : "POST",
       data : 
       {
-        userId : userId
+        userId , 
+        serverId
       }
     }).then(res => {
       if(res.status === 201)
@@ -37,7 +39,6 @@ export default {
       return embed.setDescription("Ha ocurrido un error al crear tu usuario. 😔")
     })
     
-    console.log(userInfo);
 
     return message.reply({
       embeds : [ embed ]
