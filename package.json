@@ -7,12 +7,14 @@
     "zOmegaAPI"
   ],
   "scripts": {
+    "co" : "sui-mono commit",
     "start:api": "yarn workspaces run dev"
   },
   "repository": "https://github.com/iDiego5614/KOU_zOmega.git",
   "author": "iDiego5614 <diego5614yt@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@s-ui/mono": "^2.18.0",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "standard": "16.0.4"
