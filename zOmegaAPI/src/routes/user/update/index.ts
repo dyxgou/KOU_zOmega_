@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from "fastify"
 import { UpdateBody, UpdateParams } from "./types"
 
-const update : FastifyPluginAsync = async(fastify , options) => 
+const update : FastifyPluginAsync = async(fastify) => 
 {
   // Update the currency of an user
   fastify.put<{
@@ -32,8 +32,7 @@ const update : FastifyPluginAsync = async(fastify , options) =>
     }).catch(err => {
       throw fastify.httpErrors.badRequest(err)
     })
-  }) 
-  
+  })   
 }
 
 export default update

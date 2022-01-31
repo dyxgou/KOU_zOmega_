@@ -12,7 +12,6 @@ export type RobParams = Static<typeof robParamsRequest>
 const robBodyRequest = Type.Object(
   {
     userIdToSteal : Type.String(),
-    isStealed : Type.Boolean()
   }
 )
 
