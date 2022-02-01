@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import axios from '../../utils/connection'
+import axios from '../../utils/axios'
 
 export default {
   callback : async(message : Message , ...args : string[]) => 
@@ -35,7 +35,7 @@ export default {
       }
       return
     }).catch(err => {
-      console.error(err);
+      console.error(err)
       return embed.setDescription("Ha ocurrido un error al crear tu usuario. 😔")
     })
     

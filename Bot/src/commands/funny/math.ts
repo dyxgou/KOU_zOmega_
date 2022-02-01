@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js"
 import * as mathJS from "mathjs"
 
 

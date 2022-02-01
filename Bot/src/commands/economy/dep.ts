@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import axios from '../../utils/connection'
+import axios from '../../utils/axios'
 
 export default {
   callback : async(message : Message , ...args : string[]) => 
@@ -39,16 +39,14 @@ export default {
         amount : amountToDep
       }
     }).then(res => {
-      console.log(res);
+      console.log(res)
       if(res.status === 200)
       {
         embed.setDescription(`¡Has depositado \`$${Math.floor(res.data.amountToDep)}\` :money_mouth:!`)
       }
       return
     }).catch(err => {
-      console.error(err);
-      if(err.response.status === 488
-        )
+      if(err.response.status === 488)
       {
         embed.setDescription(`No puedes sacar cantidades iguales o menores a 0 del banco. o.O`) 
       }

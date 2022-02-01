@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js'
 import * as math from "mathjs" 
-import axios from '../../utils/connection'
+import axios from '../../utils/axios'
 
 export default {
   callback : async(message : Message , ...args : string[]) => 

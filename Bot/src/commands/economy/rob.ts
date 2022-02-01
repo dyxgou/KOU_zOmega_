@@ -1,6 +1,6 @@
 import { Message, MessageEmbed } from 'discord.js'
 import math = require('mathjs')
-import axios from '../../utils/connection'
+import axios from '../../utils/axios'
 
 
 export default {
@@ -47,11 +47,11 @@ export default {
     ).then(res => {
       if(res.status === 200)
       {
-        console.log(res.data);
+        console.log(res.data)
         return res.data.amountToSteal
       }
     }).catch(err => {
-      console.error(err);
+      console.error(err)
       return 0
     })
 

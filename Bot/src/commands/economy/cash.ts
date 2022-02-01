@@ -1,5 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
-import axios from "../../utils/connection"
+import axios from "../../utils/axios"
 
 export default {
   callback : async(message : Message , ...args : string[]) => 
@@ -40,9 +40,9 @@ export default {
         const { data : userInfo } = res
 
         embed
-        .addField("> **COINS**" , `> :coin: \`$${userInfo?.coins}\`` , true)
-        .addField("> **BANK**" , `> :bank: \`$${userInfo?.bank}\`` , true)
-        .addField("> **TOTAL**" , `> :money_with_wings: \`$${userInfo?.total}\`` , true)
+          .addField("> **COINS**" , `> :coin: \`$${userInfo?.coins}\`` , true)
+          .addField("> **BANK**" , `> :bank: \`$${userInfo?.bank}\`` , true)
+          .addField("> **TOTAL**" , `> :money_with_wings: \`$${userInfo?.total}\`` , true)
       }
     }).catch(err => {
       if(err.response.status === 404)
