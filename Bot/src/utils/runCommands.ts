@@ -1,4 +1,3 @@
-
 import { RunCommands } from "./Command"
 
 interface TimeCommand 
@@ -12,11 +11,11 @@ export const runCommands = ({args , commandPrefix , message , commands} : RunCom
 {
   try 
   {
-    commands[commandPrefix].callback(message , ...args)
+    commands.get(commandPrefix)?.callback(message , ...args)
   } 
   catch (err) 
   {
-    console.error(err);
+    console.error(err)
   }
 }
 
@@ -26,10 +25,10 @@ export const runCommandsTimeout = ({
 } : RunCommands & TimeCommand) => 
 {
   try {
-    commands[commandPrefix].callback(message , ...args)
+    commands.get(commandPrefix)?.callback(message , ...args)
     timestamps.set(message.author.id , currentTime)
     setTimeout(() => timestamps.delete(message.author.id) , cooldownAmount)
   } catch (err) {
-    console.error(err); 
+    console.error(err)
   }
 }

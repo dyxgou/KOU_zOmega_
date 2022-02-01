@@ -11,7 +11,7 @@ const suffix = __filename.slice(__filename.length - 3)
 const commandHandler = (bot : Client) => 
 {
   
-  let commands : ICommand = {}
+  const commands : Map< string , ICommand > = new Map()
 
   const commandsFiles = getFiles(`${__dirname}\\commands` , suffix)
 
@@ -23,13 +23,13 @@ const commandHandler = (bot : Client) =>
 
     const split = commandRoute.replace(/\\/g , "/").split("/")
 
-    const commandName = split.at(-1)?.replace(suffix , "")
+    const commandName = split.at(-1)?.replace(suffix , "") || ""
 
     try {
-      commands[commandName || ""] = commandFile.default
-      console.log(`| ✔ | ${commandName}`);
+      commands.set(commandName , commandFile.default)
+      console.log(`| ✔ | ${commandName}`)
 
-      if(commands[commandName || ""].cooldown)
+      if(commands.get(commandName)?.cooldown)
       {
         if(!cooldowns.has(commandName))
         {
@@ -38,7 +38,7 @@ const commandHandler = (bot : Client) =>
       }
 
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 
@@ -46,18 +46,32 @@ const commandHandler = (bot : Client) =>
   {
     const args = message.content.slice(prefix.length).split(" ")
     const commandPrefix = args.shift()!.toLowerCase()
+    if(message.author.bot)
+    {
+      return
+    }
+
+    if(!message.guild)
+    {
+      return 
+    }
+
+    if(!message.content.startsWith(prefix))
+    {
+      return
+    }
     
-    if(!commands[commandPrefix])
+    if(!commands.has(commandPrefix))
     {
       return
     }
 
     const timestamps : Map< any , any > = cooldowns.get(commandPrefix)
     const currentTime = Date.now()
-
-    if(commands[commandPrefix].cooldown)
+    
+    if(commands.get(commandPrefix)?.cooldown)
     {
-      const currentCommand = commands[commandPrefix]
+      const currentCommand = commands.get(commandPrefix)
 
       const cooldownAmount = (currentCommand?.cooldown ?? 0) * 1000
       
@@ -83,11 +97,9 @@ const commandHandler = (bot : Client) =>
         })
       }
     }
-
-    try {
-      runCommands({ args , commandPrefix , commands , message })      
-    } catch (err) {
-      console.error(err);
+    else
+    {
+      runCommands({ args , commandPrefix ,commands , message })
     }
   })
 }

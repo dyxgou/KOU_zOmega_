@@ -27,7 +27,7 @@ const bot = new DiscordJS.Client(
 
 bot.on("ready" , async() => 
 {
-  console.log(`Bot is ready as ${bot.user?.tag}`);
+  console.log(`Bot is ready as ${bot.user?.tag}`)
   
   commandHandler(bot)
 })

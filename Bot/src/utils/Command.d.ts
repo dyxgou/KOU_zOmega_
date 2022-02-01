@@ -1,16 +1,14 @@
-import { Message } from "discord.js";
+import { Message } from "discord.js"
 
 export interface ICommand 
 {
-  [key : string] : {
-    callback : (message : Message , ...args  : string[]) => any,
-    cooldown ?: number
-  }
+  callback : (message : Message , ...args  : string[]) => any,
+  cooldown ?: number
 }
 
 export interface RunCommands 
 {
-  commands : ICommand,
+  commands : Map< string ,ICommand >,
   commandPrefix : string,
   message : Message<boolean>,
   args :  string[]
