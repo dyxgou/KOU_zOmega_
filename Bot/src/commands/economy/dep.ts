@@ -46,7 +46,8 @@ export default {
       }
       return
     }).catch(err => {
-      if(err.response.status === 488)
+      const NO_MONEY = 488
+      if(err.response.status === NO_MONEY)
       {
         embed.setDescription(`No puedes sacar cantidades iguales o menores a 0 del banco. o.O`) 
       }

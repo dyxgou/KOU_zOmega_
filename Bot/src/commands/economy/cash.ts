@@ -45,7 +45,8 @@ export default {
           .addField("> **TOTAL**" , `> :money_with_wings: \`$${userInfo?.total}\`` , true)
       }
     }).catch(err => {
-      if(err.response.status === 404)
+      const USER_NOTFOUND = 404
+      if(err.response.status === USER_NOTFOUND)
       {
         return embed.setDescription(`No te has iniciado en el sistema de Economía de KOU; para iniciarte, escribe el comando \`z!start\`. <:tabn:910548967291514920>`)
       }

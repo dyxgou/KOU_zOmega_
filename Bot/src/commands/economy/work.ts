@@ -31,13 +31,14 @@ export default {
         }
       }
     ).then(res => {
-      if(res.status === 200)
+      const WOCKED =  200
+      if(res.status === WOCKED)
       {
         embed.setDescription(`¡Has ganado \`$${randomAmount}\` :money_mouth: !`)
       }
     }).catch(err => {
       embed.setDescription("Ha ocurrido un error")
-      console.error(err);
+      console.error(err)
     })
 
     return message.reply({

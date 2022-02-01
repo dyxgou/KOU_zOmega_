@@ -38,13 +38,14 @@ export default {
         amount : amountToWith
       }
     }).then(res => {
-      if(res.status === 200)
+      const WITHDRAW = 200
+      if(res.status === WITHDRAW)
       {        
         embed.setDescription(`¡Has sacado del banco una cantidad de \`$${Math.floor(res.data.amountToWith)}\` :money_mouth:!`)
       }
     }).catch(err => {
-      console.error(err.response.status);
-      if(err.response.status === 304)
+      const NOT_MONEY = 304
+      if(err.response.status === NOT_MONEY)
       {
         embed.setDescription(`No tienes dinero en el banco, que puedas sacar. o.O`)
       }

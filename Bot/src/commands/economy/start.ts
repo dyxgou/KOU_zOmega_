@@ -24,7 +24,8 @@ export default {
         serverId
       }
     }).then(res => {
-      if(res.status === 201)
+      const USER_CREATED = 201
+      if(res.status === USER_CREATED)
       {
         embed.setDescription(`¡Bienvenido al sistema de economía de KOU!  <a:fiesta:852705590970417163>
         Por cortesía de la casa, has iniciado con $1000 pesitos. <:tabn:910548967291514920>
